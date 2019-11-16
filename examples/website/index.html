@@ -1,0 +1,43 @@
+<!-- <!DOCTYPE html> -->
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<title>OpenUIX Prototype</title>	
+	<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+	<script src='js/extra/three.min.js'></script>
+	<script src='js/extra/Earcut.js'></script>
+	<script src='js/openuix_test.min.js'></script>
+	<script>
+
+/** Initializes the interaction Space.
+ * @param app The reference to the App. */
+function init(app) {
+	
+	// Show a message on screen
+	console.log("Initializing OpenUIX Prototype");
+
+	// Create the world
+	let world = new Layer ("World", app);
+	world.controller = new CameraController(world);
+	new Light("Light", world.space,{type:'point', 
+		position: new Vector(10,10,10), rotation: new Vector(0,45,0)});
+
+
+	// Create a grid
+	let grid = new THREE.GridHelper( 10, 10, new THREE.Color(0xFFFFFF));
+	grid.rotation.x = Math.PI/2;
+	world.space.representation.add(grid);
+
+	// Segment.defaultMaxAngle = 45;
+
+	// Create a Gauge widget
+	let wave = new SineWaveGenerator("wave", { minValue: 100, maxValue: 200 });
+	let gauge = new Gauge("TestGauge", world, { value: wave,
+		valueMin: 50, valueMax: 200, valueLow: 0.3, valueHigh: 150
+	});
+}
+	</script>
+</head>
+<body onload="new App('OpenUIX Prototype', { initFunction: init, consoleState:1});"></body>
+</html>

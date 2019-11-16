@@ -1,0 +1,6 @@
+{
+	"name": "openuix.core.typescript.tests.browser",
+	"version": "0.1.0",
+	"main": "package.js",
+	"scripts": { "start": "electron ." }
+  }

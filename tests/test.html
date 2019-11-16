@@ -1,0 +1,109 @@
+<!-- <!DOCTYPE html> -->
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<title>OpenUIX Prototype</title>	
+	<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+	<script src='../libraries/three.min.js'></script>
+	<script src='../libraries/Earcut.js'></script>
+
+	<script src='../sources/App.js'></script>
+	<script src='../sources/data/File.js'></script>
+	<script src='../sources/data/Parameter.js'></script>
+	<script src='../sources/data/Source.js'></script>
+	<script src='../sources/data/sources/SineWaveGenerator.js'></script>
+	<script src='../sources/data/types/Vector.js'></script>
+	<script src='../sources/data/types/Color.js'></script>
+	<script src='../sources/geometry/Segment.js'></script>
+	<script src='../sources/geometry/Path.js'></script>
+	<script src='../sources/geometry/Shape.js'></script>
+	<script src='../sources/geometry/ShapeUtils.js '></script>
+	<script src='../sources/geometry/Font.js'></script>
+	<script src='../sources/geometry/Modifier.js '></script>
+	<script src='../sources/geometry/modifiers/Warp.js'></script>
+	<script src='../sources/geometry/modifiers/Skew.js'></script>
+	<script src='../sources/geometry/modifiers/Invert.js'></script>
+	<script src='../sources/geometry/paths/CirclePath.js'></script>
+	<script src='../sources/geometry/paths/RectanglePath.js'></script>
+	<script src='../sources/geometry/segments/ArcSegment.js'></script>
+	<script src='../sources/geometry/segments/CurveSegment.js'></script>
+	<script src='../sources/geometry/segments/LineSegment.js'></script>
+	<script src='../sources/geometry/shapes/Box.js'></script>
+	<script src='../sources/geometry/shapes/Cylinder.js'></script>
+	<script src='../sources/geometry/shapes/Text.js'></script>
+	<script src='../sources/interaction/Controller.js '></script>
+	<script src='../sources/interaction/Entity.js'></script>
+	<script src='../sources/interaction/Layer.js'></script>
+	<script src='../sources/interaction/Space.js'></script>
+	<script src='../sources/interaction/Widget.js'></script>
+	<script src='../sources/interaction/controllers/CameraController.js'></script>
+	<script src='../sources/interaction/entities/Camera.js'></script>
+	<script src='../sources/interaction/entities/Geometry.js'></script>
+	<script src='../sources/interaction/entities/Light.js'></script>
+	<script src='../sources/interaction/widgets/Button.js'></script>
+	<script src='../sources/interaction/widgets/Gauge.js'></script>
+
+	<!-- <script src='../binaries/openuix_test.min.js'></script> -->
+
+	<script>
+
+/** Initializes the interaction Space.
+ * @param app The reference to the App. */
+function init(app) {
+	
+	// Show a message on screen
+	console.log("Initializing OpenUIX Prototype");
+
+	// Create the world
+	let world = new Layer ("World", app);
+	world.controller = new CameraController(world);
+	new Light("Light", world.space,{type:'point', 
+		position: new Vector(10,10,10), rotation: new Vector(0,45,0)});
+
+	// Load the font
+	new Font("Orbitron", "files/fonts/Orbitron.json");
+
+	// Create a grid
+	let grid = new THREE.GridHelper( 10, 10, new THREE.Color(0xFFFFFF));
+	grid.rotation.x = Math.PI/2;
+	world.space.representation.add(grid);
+
+
+
+	let wave = new SineWaveGenerator("wave", { minValue: 50, maxValue: 200 });
+
+	// Create the widgets
+	let styles = ['normal', 'industrial', 'medical','aerospace', 'futuristic'];
+	let styleIndex, styleCount = styles.length;
+	for(styleIndex = 0; styleIndex < styleCount; styleIndex++) {
+		let style = styles[styleIndex];
+		let gauge = new Gauge("Gauge" + style, world, {
+			style: style, label: 'SPEED', units: 'KM/H',
+			value: wave, valueMin: 0, valueMax: 200, 
+			valueLow: 50, valueHigh: 150, valueDigits: 0, 
+			position: new Vector(styleIndex + 0.5,0.5,0)
+		});
+	}
+
+
+	// Temporal
+	// let button = new Button("Button", world);
+
+
+	// let sphere = new THREE.Mesh( new THREE.SphereGeometry( 1, 32, 32 ), 
+	// 		new THREE.MeshPhongMaterial( {color: 0xffff00} )1);
+	// sphere.position.set(4,0,0);
+	// world.space.representation.add(sphere);
+	// let light = new THREE.DirectionalLight( 0xffffff, 1 );
+	// light.color.setHSL( 0.1, 1, 0.95 );
+	// light.position.set(  1, 1.75, 1 );
+	// light.position.multiplyScalar( 30 );
+	// world.space.representation.add( light );
+}
+
+	</script>
+
+</head>
+<body onload="new App('OpenUIX Prototype', { initFunction: init, consoleState:1});"></body>
+</html>
